@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>Horatiu-Vasile Marginean</author>
+ <class>QueueLauncherClass</class>
+ <widget class="QMainWindow" name="QueueLauncherClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>616</width>
+    <height>424</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>616</width>
+    <height>424</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>616</width>
+    <height>424</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Queue Launcher Config</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QTabWidget::pane {
+    background: transparent;
+    border:0;
+}</string>
+  </property>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="appsTab">
+    <attribute name="title">
+     <string>Apps</string>
+    </attribute>
+    <widget class="QListWidget" name="queueList">
+     <property name="geometry">
+      <rect>
+       <x>16</x>
+       <y>40</y>
+       <width>272</width>
+       <height>312</height>
+      </rect>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="queueListLabel">
+     <property name="geometry">
+      <rect>
+       <x>16</x>
+       <y>16</y>
+       <width>272</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Queue</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="ignoredListLabel">
+     <property name="geometry">
+      <rect>
+       <x>328</x>
+       <y>16</y>
+       <width>272</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Ignored</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="launchButton">
+     <property name="geometry">
+      <rect>
+       <x>16</x>
+       <y>360</y>
+       <width>64</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Launch the highest app in queue</string>
+     </property>
+     <property name="text">
+      <string>Launch</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="ignoredList">
+     <property name="geometry">
+      <rect>
+       <x>328</x>
+       <y>40</y>
+       <width>272</width>
+       <height>312</height>
+      </rect>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
+     </property>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>296</x>
+       <y>40</y>
+       <width>26</width>
+       <height>312</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SizeConstraint::SetMinimumSize</enum>
+      </property>
+      <item>
+       <widget class="QPushButton" name="addButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Add app</string>
+        </property>
+        <property name="text">
+         <string>+</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="renameButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Rename app</string>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="removeButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Remove app</string>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_1">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Policy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>24</width>
+          <height>10</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="moveUpButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Move up</string>
+        </property>
+        <property name="text">
+         <string>↑</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="moveDownButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Move down</string>
+        </property>
+        <property name="text">
+         <string>↓</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Policy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>24</width>
+          <height>10</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="moveButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Move app</string>
+        </property>
+        <property name="text">
+         <string>&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="moveAllButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Move apps</string>
+        </property>
+        <property name="text">
+         <string>&gt;&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>24</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="scanButton">
+        <property name="minimumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Scan for installed apps</string>
+        </property>
+        <property name="text">
+         <string>↻</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="pathsTab">
+    <attribute name="title">
+     <string>Paths</string>
+    </attribute>
+    <widget class="QLabel" name="steamPathLabel">
+     <property name="geometry">
+      <rect>
+       <x>16</x>
+       <y>16</y>
+       <width>40</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Steam</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="steamPathLineEdit">
+     <property name="geometry">
+      <rect>
+       <x>16</x>
+       <y>40</y>
+       <width>552</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pickSteamPathButton">
+     <property name="geometry">
+      <rect>
+       <x>576</x>
+       <y>40</y>
+       <width>24</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Pick Steam path</string>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="../rsrc/QueueLauncher.qrc"/>
+ </resources>
+ <connections/>
+</ui>
