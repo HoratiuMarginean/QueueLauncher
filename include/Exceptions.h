@@ -12,9 +12,9 @@
 #include <qstring.h>
 #include <qmessagebox.h>
 
-namespace Ex
+namespace ex
 {
-  namespace App
+  namespace app
   {
     class DbSyncFailed : public std::runtime_error
     {
@@ -29,7 +29,7 @@ namespace Ex
     };
   }
 
-  namespace Db
+  namespace db
   {
     class QueryFailed : public std::runtime_error
     {
@@ -38,7 +38,7 @@ namespace Ex
 
       void Show(QWidget* parent = nullptr) const
       {
-        Utils::ShowMessageBox(parent, QMessageBox::Critical, msg);
+        utils::ShowMessageBox(parent, QMessageBox::Critical, msg);
       }
 
     private:

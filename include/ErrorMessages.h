@@ -14,13 +14,13 @@ struct ErrorMessage
 
   void Show(QWidget* parent = nullptr) const
   {
-    Utils::ShowMessageBox(parent, icon, msg);
+    utils::ShowMessageBox(parent, icon, msg);
   }
 };
 
-namespace Err
+namespace err
 {
-  namespace App
+  namespace app
   {
     inline const ErrorMessage launchFailed{ QMessageBox::Critical, "App launch failed." };
     inline const ErrorMessage dbSyncFailed{ QMessageBox::Critical, "App order sync failed." };
@@ -31,24 +31,24 @@ namespace Err
     inline const ErrorMessage saveSteamPathFailed{ QMessageBox::Critical, "Steam path could not be saved." };
   }
 
-  namespace Db
+  namespace db
   {
     inline const ErrorMessage openFailed{ QMessageBox::Critical, "Could not open database." };
   }
 }
 
-namespace Warn
+namespace warn
 {
-  namespace App
+  namespace app
   {
     inline const ErrorMessage alreadyAdded{ QMessageBox::Warning, "App already added." };
     inline const ErrorMessage nameDuplicated{ QMessageBox::Warning, "App with the same name already exists." };
   }
 }
 
-namespace Info
+namespace info
 {
-  namespace App
+  namespace app
   {
     inline const ErrorMessage queueEmpty{ QMessageBox::Information, "No apps found in queue." };
     inline const ErrorMessage noSteamApps{ QMessageBox::Information, "No Steam apps installed." };

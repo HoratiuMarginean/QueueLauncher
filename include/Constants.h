@@ -3,7 +3,7 @@
 // Qt
 #include <qstring.h>
 
-namespace Consts
+namespace consts
 {
   const QString dbType = "QSQLITE";
   const QString dbFileName = "config.db";

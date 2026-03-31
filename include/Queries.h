@@ -2,7 +2,7 @@
 
 #include <qstring.h>
 
-namespace Queries
+namespace queries
 {
 #pragma region Create Queries
 
@@ -35,6 +35,13 @@ namespace Queries
     " PRIMARY KEY(app_id, store_id),"
     " FOREIGN KEY(app_id) REFERENCES app(id),"
     " FOREIGN KEY(store_id) REFERENCES store(id)"
+    ")";
+
+  const QString createTableOption =
+    "CREATE TABLE IF NOT EXISTS option ("
+    " id INTEGER PRIMARY KEY AUTOINCREMENT,"
+    " name TEXT NOT NULL,"
+    " value TEXT NOT NULL"
     ")";
 
 #pragma endregion

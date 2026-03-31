@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <author>Horatiu-Vasile Marginean</author>
- <class>QueueLauncherClass</class>
- <widget class="QMainWindow" name="QueueLauncherClass">
+ <class>QueueLauncher</class>
+ <widget class="QMainWindow" name="QueueLauncher">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -24,7 +24,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Queue Launcher Config</string>
+   <string>Queue Launcher</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QTabWidget::pane {
@@ -69,7 +69,7 @@
       <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="ignoredListLabel">
+    <widget class="QLabel" name="ignoreListLabel">
      <property name="geometry">
       <rect>
        <x>328</x>
@@ -101,7 +101,7 @@
       <string>Launch</string>
      </property>
     </widget>
-    <widget class="QListWidget" name="ignoredList">
+    <widget class="QListWidget" name="ignoreList">
      <property name="geometry">
       <rect>
        <x>328</x>
@@ -378,58 +378,98 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QWidget" name="pathsTab">
+   <widget class="QWidget" name="optionsTab">
     <attribute name="title">
-     <string>Paths</string>
+     <string>Options</string>
     </attribute>
-    <widget class="QLabel" name="steamPathLabel">
+    <widget class="QGroupBox" name="pathsGroupBox">
      <property name="geometry">
       <rect>
        <x>16</x>
-       <y>16</y>
-       <width>40</width>
-       <height>16</height>
+       <y>200</y>
+       <width>584</width>
+       <height>184</height>
       </rect>
      </property>
-     <property name="text">
-      <string>Steam</string>
+     <property name="title">
+      <string>Paths</string>
      </property>
+     <widget class="QPushButton" name="pickSteamPathButton">
+      <property name="geometry">
+       <rect>
+        <x>552</x>
+        <y>48</y>
+        <width>24</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Pick Steam path</string>
+      </property>
+      <property name="text">
+       <string>...</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="steamPathLabel">
+      <property name="geometry">
+       <rect>
+        <x>8</x>
+        <y>24</y>
+        <width>40</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Steam</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="steamPathLineEdit">
+      <property name="geometry">
+       <rect>
+        <x>8</x>
+        <y>48</y>
+        <width>536</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
-    <widget class="QLineEdit" name="steamPathLineEdit">
+    <widget class="QGroupBox" name="generalGroupBox">
      <property name="geometry">
       <rect>
        <x>16</x>
-       <y>40</y>
-       <width>552</width>
-       <height>24</height>
+       <y>8</y>
+       <width>584</width>
+       <height>184</height>
       </rect>
      </property>
-     <property name="readOnly">
-      <bool>true</bool>
+     <property name="title">
+      <string>General</string>
      </property>
-    </widget>
-    <widget class="QPushButton" name="pickSteamPathButton">
-     <property name="geometry">
-      <rect>
-       <x>576</x>
-       <y>40</y>
-       <width>24</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>Pick Steam path</string>
-     </property>
-     <property name="text">
-      <string>...</string>
-     </property>
+     <widget class="QCheckBox" name="keepOpenCheckBox">
+      <property name="geometry">
+       <rect>
+        <x>8</x>
+        <y>24</y>
+        <width>80</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Keep open</string>
+      </property>
+      <property name="tristate">
+       <bool>false</bool>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="../rsrc/QueueLauncher.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -8,15 +8,16 @@
 #include <qstring.h>
 #include <qwidget.h>
 #include <qmessagebox.h>
+#include <qtypes.h>
 
-namespace Utils
+namespace utils
 {
   bool CreateDbTables();
 
-  bool LaunchApp();
+  bool LaunchApp(uint queueIndex = 0);
 
   bool ValidSteamPath(const QString& steamPath);
   std::vector<std::tuple<QString, int>> GetInstalledSteamAppsNameExternalId(const QString& libraryFoldersFilePath);
 
-  inline void ShowMessageBox(QWidget* parent, const QMessageBox::Icon& icon, const QString& msg);
+  void ShowMessageBox(QWidget* parent, const QMessageBox::Icon& icon, const QString& msg);
 }

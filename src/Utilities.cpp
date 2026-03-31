@@ -4,7 +4,6 @@
 #include "Queries.h"
 
 // Standard Library
-#include <stdexcept>
 #include <vector>
 #include <string>
 #include <tuple>
@@ -21,12 +20,13 @@ namespace fs = std::filesystem;
 #include <qsqlquery.h>
 #include <qfileinfo.h>
 #include <qmessagebox.h>
+#include <qtypes.h>
 
 // VDF Parser
 #include <vdf_parser.hpp>
 namespace vdf = tyti::vdf;
 
-namespace Utils
+namespace utils
 {
   bool CreateDbTables()
   {
@@ -36,54 +36,52 @@ namespace Utils
     QSqlQuery query;
     if (!dbTables.contains("app"))
     {
-      if (!query.exec(Queries::createTableApp))
-      {
-        throw Ex::Db::QueryFailed(query.lastError());
-      }
+      if (!query.exec(queries::createTableApp))
+        throw ex::db::QueryFailed(query.lastError());
       anyTableCreated = true;
     }
     if (!dbTables.contains("local_app"))
     {
-      if (!query.exec(Queries::createTableLocalApp))
-      {
-        throw Ex::Db::QueryFailed(query.lastError());
-      }
+      if (!query.exec(queries::createTableLocalApp))
+        throw ex::db::QueryFailed(query.lastError());
       anyTableCreated = true;
     }
     if (!dbTables.contains("store"))
     {
-      if (!query.exec(Queries::createTableStore))
-      {
-        throw Ex::Db::QueryFailed(query.lastError());
-      }
+      if (!query.exec(queries::createTableStore))
+        throw ex::db::QueryFailed(query.lastError());
       anyTableCreated = true;
     }
     if (!dbTables.contains("store_app"))
     {
-      if (!query.exec(Queries::createTableStoreApp))
-      {
-        throw Ex::Db::QueryFailed(query.lastError());
-      }
+      if (!query.exec(queries::createTableStoreApp))
+        throw ex::db::QueryFailed(query.lastError());
       anyTableCreated = true;
     }
+    /*if (!dbTables.contains("option"))
+    {
+      if (!query.exec(Queries::createTableOption)) throw ex::db::QueryFailed(query.lastError());
+      anyTableCreated = true;
+    }*/
 
     return anyTableCreated;
   }
 
-  bool LaunchApp()
+  bool LaunchApp(const uint queueIndex)
   {
     QSqlQuery selectAppIdQuery(
       "SELECT id "
       "FROM app "
-      "WHERE queue_index = 0"
+      "WHERE queue_index = ?"
     );
+    selectAppIdQuery.addBindValue(queueIndex);
     if (!selectAppIdQuery.exec())
     {
-      throw Ex::Db::QueryFailed(selectAppIdQuery.lastError());
+      throw ex::db::QueryFailed(selectAppIdQuery.lastError());
     }
     if (!selectAppIdQuery.next())
     {
-      Info::App::queueEmpty.Show();
+      info::app::queueEmpty.Show();
       return false;
     }
     int appId = selectAppIdQuery.value(0).toInt();
@@ -96,7 +94,7 @@ namespace Utils
     selectStoreAppQuery.addBindValue(appId);
     if (!selectStoreAppQuery.exec())
     {
-      throw Ex::Db::QueryFailed(selectStoreAppQuery.lastError());
+      throw ex::db::QueryFailed(selectStoreAppQuery.lastError());
     }
 
     QSqlQuery selectLocalAppQuery(
@@ -107,14 +105,14 @@ namespace Utils
     selectLocalAppQuery.addBindValue(appId);
     if (!selectLocalAppQuery.exec())
     {
-      throw Ex::Db::QueryFailed(selectLocalAppQuery.lastError());
+      throw ex::db::QueryFailed(selectLocalAppQuery.lastError());
     }
 
     QString runAppPath;
     QStringList runAppArguments;
     if (selectStoreAppQuery.next())
     {
-      int storeId = selectStoreAppQuery.value(0).toInt();
+      int storeId    = selectStoreAppQuery.value(0).toInt();
       int externalId = selectStoreAppQuery.value(1).toInt();
 
       QSqlQuery selectStoreQuery(
@@ -125,7 +123,7 @@ namespace Utils
       selectStoreQuery.addBindValue(storeId);
       if (!selectStoreQuery.exec())
       {
-        throw Ex::Db::QueryFailed(selectStoreQuery.lastError());
+        throw ex::db::QueryFailed(selectStoreQuery.lastError());
       }
       if (!selectStoreQuery.next())
       {
@@ -140,8 +138,8 @@ namespace Utils
         {
           return false;
         }
-        runAppPath = storePath + "/steam.exe";
-        runAppArguments = { "-nochatui", "-nofriendsui", "-silent", "steam://rungameid/" + QString::number(externalId) };
+        runAppPath      = storePath + "/steam.exe";
+        runAppArguments = {"-nochatui", "-nofriendsui", "-silent", "steam://rungameid/" + QString::number(externalId)};
       }
       // Other stores
       else
@@ -160,7 +158,7 @@ namespace Utils
 
     if (!QProcess::startDetached(runAppPath, runAppArguments))
     {
-      Err::App::launchFailed.Show();
+      err::app::launchFailed.Show();
       return false;
     }
 
@@ -196,6 +194,7 @@ namespace Utils
 
     return true;
   }
+
   // TODO: Add custom exceptions
   std::vector<std::tuple<QString, int>> GetInstalledSteamAppsNameExternalId(const QString& libraryFoldersFilePath)
   {
@@ -209,7 +208,7 @@ namespace Utils
     }
     if (installPaths.empty())
     {
-      throw Ex::App::NoSteamApps();
+      throw ex::app::NoSteamApps();
     }
 
     std::vector<std::tuple<QString, int>> appsNameExternalId;
@@ -226,30 +225,33 @@ namespace Utils
         std::ifstream manifestFile(path.string());
         auto manifestFileRoot = vdf::read(manifestFile);
 
-        QString appName = QString::fromStdString(manifestFileRoot.attribs["name"]);
+        QString appName   = QString::fromStdString(manifestFileRoot.attribs["name"]);
         int appExternalId = std::stoi(manifestFileRoot.attribs["appid"]);
 
-        appsNameExternalId.push_back({ appName, appExternalId });
+        appsNameExternalId.push_back({appName, appExternalId});
       }
     }
     if (appsNameExternalId.empty())
     {
-      throw Ex::App::NoSteamApps();
+      throw ex::app::NoSteamApps();
     }
 
     return appsNameExternalId;
   }
 
-  inline void ShowMessageBox(QWidget* parent, const QMessageBox::Icon& icon, const QString& msg)
+  void ShowMessageBox(QWidget* parent, const QMessageBox::Icon& icon, const QString& msg)
   {
     QMessageBox msgBox(parent);
     msgBox.setIcon(icon);
     switch (icon)
     {
-      case QMessageBox::Information: msgBox.setWindowTitle("Info"); break;
-      case QMessageBox::Warning:     msgBox.setWindowTitle("Warning"); break;
-      case QMessageBox::Critical:    msgBox.setWindowTitle("Error"); break;
-      default:                       msgBox.setWindowTitle("");
+      case QMessageBox::Information: msgBox.setWindowTitle("Info");
+        break;
+      case QMessageBox::Warning: msgBox.setWindowTitle("Warning");
+        break;
+      case QMessageBox::Critical: msgBox.setWindowTitle("Error");
+        break;
+      default: msgBox.setWindowTitle("");
     }
     msgBox.setText(msg);
 
