@@ -112,8 +112,8 @@ namespace utils
     QStringList runAppArguments;
     if (selectStoreAppQuery.next())
     {
-      int storeId    = selectStoreAppQuery.value(0).toInt();
-      int externalId = selectStoreAppQuery.value(1).toInt();
+      const int storeId = selectStoreAppQuery.value(0).toInt();
+      const int externalId = selectStoreAppQuery.value(1).toInt();
 
       QSqlQuery selectStoreQuery(
         "SELECT name, path "
@@ -129,8 +129,8 @@ namespace utils
       {
         return false;
       }
-      QString storeName = selectStoreQuery.value(0).toString();
-      QString storePath = selectStoreQuery.value(1).toString();
+      const QString storeName = selectStoreQuery.value(0).toString();
+      const QString storePath = selectStoreQuery.value(1).toString();
 
       if (storeName == "Steam")
       {
@@ -138,7 +138,7 @@ namespace utils
         {
           return false;
         }
-        runAppPath      = storePath + "/steam.exe";
+        runAppPath = storePath + "/steam.exe";
         runAppArguments = {"-nochatui", "-nofriendsui", "-silent", "steam://rungameid/" + QString::number(externalId)};
       }
       // Other stores
@@ -172,21 +172,21 @@ namespace utils
       return false;
     }
 
-    if (!QFileInfo(steamPath).exists())
+    if (!QFileInfo::exists(steamPath))
     {
       QMessageBox::warning(nullptr, "Warning", "Steam path \"" + steamPath + "\" does not exist.");
       return false;
     }
 
-    QString steamAppsPath = steamPath + "/steamapps";
-    if (!QFileInfo(steamAppsPath).exists())
+    const QString steamAppsPath = steamPath + "/steamapps";
+    if (!QFileInfo::exists(steamAppsPath))
     {
       QMessageBox::warning(nullptr, "Warning", "Directory \"" + steamAppsPath + "\" not found.");
       return false;
     }
 
-    QString libraryFilePath = steamAppsPath + "/libraryfolders.vdf";
-    if (!QFileInfo(libraryFilePath).exists())
+    const QString libraryFilePath = steamAppsPath + "/libraryfolders.vdf";
+    if (!QFileInfo::exists(libraryFilePath))
     {
       QMessageBox::warning(nullptr, "Warning", "File \"" + libraryFilePath + "\" not found.");
       return false;
@@ -204,7 +204,7 @@ namespace utils
     auto libraryFoldersFileRoot = vdf::read(libraryFoldersFile);
     for (auto& child : libraryFoldersFileRoot.childs)
     {
-      installPaths.push_back(child.second.get()->attribs["path"] + "\\steamapps");
+      installPaths.emplace_back(child.second.get()->attribs["path"] + "\\steamapps");
     }
     if (installPaths.empty())
     {
@@ -214,9 +214,9 @@ namespace utils
     std::vector<std::tuple<QString, int>> appsNameExternalId;
     for (const fs::path& installPath : installPaths)
     {
-      for (const fs::directory_entry entry : fs::directory_iterator(installPath))
+      for (const fs::directory_entry& entry : fs::directory_iterator(installPath))
       {
-        fs::path path = entry.path();
+        const fs::path& path = entry.path();
         if (path.extension() != ".acf")
         {
           continue;
@@ -225,10 +225,10 @@ namespace utils
         std::ifstream manifestFile(path.string());
         auto manifestFileRoot = vdf::read(manifestFile);
 
-        QString appName   = QString::fromStdString(manifestFileRoot.attribs["name"]);
+        QString appName = QString::fromStdString(manifestFileRoot.attribs["name"]);
         int appExternalId = std::stoi(manifestFileRoot.attribs["appid"]);
 
-        appsNameExternalId.push_back({appName, appExternalId});
+        appsNameExternalId.emplace_back(appName, appExternalId);
       }
     }
     if (appsNameExternalId.empty())

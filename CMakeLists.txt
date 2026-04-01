@@ -62,7 +62,10 @@ if (WIN32)
   install(SCRIPT "${DEPLOY_SCRIPT}")
 
   install(RUNTIME_DEPENDENCY_SET RUNTIME_DEPS
-    PRE_EXCLUDE_REGEXES "api-ms-win-.*"
-    POST_EXCLUDE_REGEXES ".*Qt6.*"
+    PRE_EXCLUDE_REGEXES
+    "api-ms-win-.*"
+    POST_EXCLUDE_REGEXES
+    ".*Qt6.*"
+    ".*system32.*"
   )
 endif ()
